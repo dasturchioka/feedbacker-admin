@@ -1,9 +1,9 @@
 import DefaultLayout from '@/layouts/default-layout'
 
-export default function HomePage() {
+export function FeedPage() {
 	return (
 		<DefaultLayout>
-			<div>home-page</div>
+			<div>FeedPage</div>
 		</DefaultLayout>
 	)
 }

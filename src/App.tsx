@@ -1,30 +1,15 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { HomeIcon, InfoIcon, LockIcon, UserIcon } from 'lucide-react'
-import HomePage from './pages/home-page'
-import AuthPage from './pages/auth-page'
-import AboutPage from './pages/about-page'
-import ProfilePage from './pages/profile-page'
+import { HomeIcon, LockIcon } from 'lucide-react'
+import { FeedPage } from './_feedbacks'
+import { AuthPage } from './_auth'
+import { Toaster } from '@/shared/ui/sonner'
 
 export const routes = [
 	{
 		path: '/',
-		component: <HomePage />,
-		name: 'Bosh sahifa',
+		component: <FeedPage />,
+		name: 'Feedbacklar',
 		icon: HomeIcon,
-		layout: 'default',
-	},
-	{
-		path: '/about',
-		component: <AboutPage />,
-		name: 'About',
-		icon: InfoIcon,
-		layout: 'default',
-	},
-	{
-		path: '/profile',
-		component: <ProfilePage />,
-		name: 'Profil',
-		icon: UserIcon,
 		layout: 'default',
 	},
 	{
@@ -39,6 +24,7 @@ export const routes = [
 export default function App() {
 	return (
 		<BrowserRouter>
+			<Toaster position='top-center' />
 			<Routes>
 				{routes.map((route, index) => {
 					return <Route key={index} path={route.path} element={route.component} />

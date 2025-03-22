@@ -11,7 +11,7 @@ import {
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
-} from '@/components/ui/sidebar'
+} from '@/shared/ui/sidebar'
 import { routes } from '@/App'
 import { LogOutIcon, UserIcon } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
