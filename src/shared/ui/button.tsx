@@ -1,6 +1,7 @@
 import { Slot } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
 import * as React from 'react'
+import useLoadingStore from '../stores/loading'
 
 import { cn } from '@/shared/lib/utils'
 
@@ -43,9 +44,11 @@ function Button({
 		asChild?: boolean
 	}) {
 	const Comp = asChild ? Slot : 'button'
+	const isLoading = useLoadingStore(state => state.isLoading)
 
 	return (
 		<Comp
+			disabled={isLoading}
 			data-slot='button'
 			className={cn(buttonVariants({ variant, size, className }))}
 			{...props}

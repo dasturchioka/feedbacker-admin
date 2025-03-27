@@ -1,6 +1,6 @@
 import { Button } from '@/shared/ui/button'
 import { Input } from '@/shared/ui/input'
-import { AuthInstance } from '..'
+import { feedbackerInstance } from '@/shared/http'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -16,6 +16,7 @@ import {
 import Cookies from 'js-cookie'
 import { toast } from 'sonner'
 import { useNavigate } from 'react-router-dom'
+import useLoadingStore from '@/shared/stores/loading'
 
 const LATIN_NUMBER_REGEX = /^[A-Za-z0-9]+$/
 const PASSWORD_REGEX = /^[^\sА-Яа-яЁё]+$/
@@ -41,7 +42,8 @@ const FormSchema = z.object({
 		}),
 })
 
-export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRef<'form'>) {
+export function LoginForm({}: React.ComponentPropsWithoutRef<'form'>) {
+	const setLoading = useLoadingStore(state => state.setLoading)
 	const nav = useNavigate()
 	const form = useForm<z.infer<typeof FormSchema>>({
 		resolver: zodResolver(FormSchema),
@@ -53,16 +55,19 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
 
 	async function submit({ password, username }: { username: string; password: string }) {
 		try {
-			const response = await AuthInstance.post('/auth', { username, password })
+			await setLoading(true)
+			const response = await feedbackerInstance.post('/auth', { username, password })
 
 			if (response.status === 200) {
 				const data = await response.data
 				Cookies.set('token', data.token, { secure: true })
 				toast.success(data.msg)
 				nav('/')
+				await setLoading(false)
 				return
 			}
 		} catch (error) {
+			await setLoading(false)
 			console.log(error)
 		}
 	}

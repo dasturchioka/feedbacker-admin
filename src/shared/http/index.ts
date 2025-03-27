@@ -2,36 +2,44 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 import { toast } from 'sonner'
 
-export const authInstance = axios.create({
+const token = Cookies.get('token')
+
+export const feedbackerInstance = axios.create({
 	baseURL: 'http://localhost:3000/api/feedbacker',
+	headers: {
+		Authorization: `Bearer ${token ? token : ''}`,
+	},
 })
 
-authInstance.interceptors.request.use(
-	config => {
-		const token = Cookies.get('token')
+feedbackerInstance.interceptors.request.use(
+	async config => {
 		if (token) {
 			config.headers.Authorization = `Bearer ${token}`
 		}
 		return config
 	},
-	error => {
+	async error => {
 		return Promise.reject(error)
 	}
 )
 
+console.log(token)
+
 // Response interceptor to handle errors globally
-authInstance.interceptors.response.use(
-	response => {
+feedbackerInstance.interceptors.response.use(
+	async response => {
+		const token = Cookies.get('token')
+		feedbackerInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`
 		return response
 	},
-	error => {
+	async error => {
 		if (error.response) {
 			// Handle 401 (Unauthorized)
 			if (error.response.status === 401) {
 				console.error('Unauthorized! Redirecting to login...')
 				// You can redirect to login or remove the token
 				Cookies.remove('token')
-				window.location.href = '/auth'
+				console.log(error)
 			}
 
 			toast.error(error.response.data.message || error.response.data.error)

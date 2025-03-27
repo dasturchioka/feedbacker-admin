@@ -4,6 +4,8 @@
 
 @custom-variant dark (&:is(.dark *));
 
+
+
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);
@@ -148,4 +150,10 @@
 
 *::-webkit-scrollbar-thumb:active {
   background-color: #5F5F5F;
+}
+
+svg.star-svg {
+  display: inline !important;
+  width: 30px;
+  height: 30px;
 }
