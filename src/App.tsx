@@ -6,7 +6,9 @@ import { Toaster } from '@/shared/ui/sonner'
 import ProfilePage from './_profile/pages/profile-page'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+	defaultOptions: { queries: { refetchOnWindowFocus: false, staleTime: 1000 * 60 * 5 } },
+})
 export const routes = [
 	{
 		path: '/',

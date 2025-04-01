@@ -42,9 +42,12 @@ feedbackerInstance.interceptors.response.use(
 				console.log(error)
 			}
 
-			toast.error(error.response.data.message || error.response.data.error)
+			if (error.response.status !== 404) {
+				toast.error(error.response.data.msg || error.response.data.error)
+				return
+			}
 		} else {
-			console.error('Network Error:', error.message)
+			console.error('Network Error:', error.msg)
 		}
 
 		return Promise.reject(error)

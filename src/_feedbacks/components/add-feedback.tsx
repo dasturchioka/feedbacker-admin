@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/select'
 import { useQuery } from '@tanstack/react-query'
 import { fetchTeachers } from '../calls'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Input } from '@/shared/ui/input'
 import { Label } from '@/shared/ui/label'
 import useDate from '@/shared/hooks/use-date'
@@ -14,15 +14,17 @@ export default function AddFeedback() {
 	const { data, isLoading, isError } = useQuery({
 		queryKey: ['fetch-teachers'],
 		queryFn: fetchTeachers,
-		staleTime: 1000 * 60 * 5, // 5 minutes
 	})
 	const { formattedDate } = useDate()
-	const inputRef = useRef<HTMLInputElement | null>(null)
 	const [selectedTeacher, setSelectedTeacher] = useState(() => ({
 		fullname: '',
 		id: '',
 		rating: 0,
 	}))
+
+	useEffect(() => {
+		console.log(selectedTeacher);
+	}, [selectedTeacher])
 
 	return (
 		<Dialog>
@@ -83,7 +85,6 @@ export default function AddFeedback() {
 					<Input
 						defaultValue={formattedDate}
 						onChange={e => console.log(e.target.value)}
-						ref={inputRef}
 						type='datetime-local'
 					/>
 				</div>

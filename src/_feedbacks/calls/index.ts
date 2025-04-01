@@ -10,3 +10,13 @@ export async function fetchTeachers() {
 
 	return data
 }
+
+export async function fetchFeedbacks() {
+	const response = await feedbackerInstance.get('/fetch-feedbacks', {
+		headers: { Authorization: `Bearer ${Cookies.get('token')}` },
+	})
+
+	const data = await response.data.feedbacks
+
+	return data
+}
